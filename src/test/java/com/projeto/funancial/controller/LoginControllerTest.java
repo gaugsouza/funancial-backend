@@ -19,13 +19,15 @@ import com.projeto.funancial.model.Usuario;
 import com.projeto.funancial.service.AuthenticationService;
 import com.projeto.funancial.service.EncriptadorService;
 import com.projeto.funancial.service.UsuarioService;
+import com.projeto.funancial.transformation.UsuarioTransformation;
 
 public class LoginControllerTest {
 	private UsuarioService svc = Mockito.mock(UsuarioService.class);
 	private EncriptadorService encrypt = Mockito.mock(EncriptadorService.class);
 	private AuthenticationService auth = Mockito.mock(AuthenticationService.class); 
 	private UsuarioController usuarioController = Mockito.mock(UsuarioController.class);
-	private LoginController loginController = new LoginController(svc, encrypt, auth, usuarioController);
+	private UsuarioTransformation transformation = Mockito.mock(UsuarioTransformation.class);
+	private LoginController loginController = new LoginController(svc, transformation, encrypt, auth, usuarioController);
 	@Test
 	public void efetua_login_deve_retornar_usuario_informado_quando_o_token_informado_for_valido() {
 		// config
@@ -180,6 +182,7 @@ public class LoginControllerTest {
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
+		when(transformation.convert(usuario)).thenReturn(usuarioCanonical);
 		when(auth.geraToken(usuarioCanonical)).thenThrow(AuthenticationServiceException.class);
 		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
@@ -197,6 +200,7 @@ public class LoginControllerTest {
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
+		when(transformation.convert(usuario)).thenReturn(usuarioCanonical);
 		when(auth.geraToken(usuarioCanonical)).thenThrow(AuthenticationServiceException.class);
 		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
