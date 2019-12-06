@@ -23,7 +23,7 @@ import com.projeto.funancial.transformation.UsuarioTransformation;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins =  "http://funancial-frontend.herokuapp.com" )
+@CrossOrigin
 public class LoginController {
 	private UsuarioService usuarioService;
 	private UsuarioTransformation usuarioTransformation;
@@ -63,12 +63,12 @@ public class LoginController {
 			
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.OK);
 		} catch(EncriptadorServiceException e) {
-			logger.error("Erro encontrado durante a validação da senha informada:\n" + e.getMessage()
+			logger.error("Erro encontrado durante a validaÃ§Ã£o da senha informada:\n" + e.getMessage()
 					+ "\nCausa:\n" + e.getCause());
 			
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch(AuthenticationServiceException e) {
-			logger.error("Erro encontrado durante a geração de token: \n" + e.getMessage()
+			logger.error("Erro encontrado durante a geraÃ§Ã£o de token: \n" + e.getMessage()
 			+ "\nCausa:\n" + e.getCause());
 			
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.INTERNAL_SERVER_ERROR);
