@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import com.projeto.funancial.canonical.UsuarioCanonical;
 import com.projeto.funancial.exception.AuthenticationServiceException;
 import com.projeto.funancial.exception.EncriptadorServiceException;
+import com.projeto.funancial.model.Status;
 import com.projeto.funancial.model.Usuario;
 import com.projeto.funancial.service.AuthenticationService;
 import com.projeto.funancial.service.EncriptadorService;
@@ -25,218 +26,184 @@ public class LoginControllerTest {
 	private AuthenticationService auth = Mockito.mock(AuthenticationService.class); 
 	private UsuarioController usuarioController = Mockito.mock(UsuarioController.class);
 	private LoginController loginController = new LoginController(svc, encrypt, auth, usuarioController);
-	
 	@Test
 	public void efetua_login_deve_retornar_usuario_informado_quando_o_token_informado_for_valido() {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.jwt("test")
-												.build();
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get()).jwt("test").build();
 		when(auth.validaToken(usuarioCanonical)).thenReturn(true);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
 
 	@Test
 	public void efetua_login_deve_retornar_status_ok_quando_o_token_informado_for_valido() {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.jwt("test")
-												.build();
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get()).jwt("test").build();
 		when(auth.validaToken(usuarioCanonical)).thenReturn(true);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.OK, resultado.getStatusCode());
 	}
-	
+
 	@Test
 	public void efetua_login_bem_sucedido_deve_retornar_usuario_informado() throws EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioTeste@teste.com")
-												.senha("123")												
-												.build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
 	public void efetua_login_bem_sucedido_deve_retornar_status_ok() throws EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioTeste@teste.com")
-												.senha("123")												
-												.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");		
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.OK, resultado.getStatusCode());
 	}
-	
+
 	@Test
 	public void efetua_login_mal_sucedido_por_email_nao_encontrado_deve_retornar_usuario_informado() {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioInexistente@teste.com")
-												.senha("123")												
-												.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
-		
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioInexistente@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
 	public void efetua_login_mal_sucedido_por_email_nao_encontrado_deve_retornar_status_no_content() {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioInexistente@teste.com")
-												.senha("123")												
-												.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
-		
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioInexistente@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.NO_CONTENT, resultado.getStatusCode());
 	}
-	
+
 	@Test
-	public void efetua_login_mal_sucedido_por_senha_incorreta_deve_retornar_usuario_informado() throws EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioTeste@teste.com")
-												.senha("123")												
-												.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125");
-		
+	public void efetua_login_mal_sucedido_por_senha_incorreta_deve_retornar_usuario_informado()
+			throws EncriptadorServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(false);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
-	public void efetua_login_mal_sucedido_por_senha_incorreta_deve_retornar_status_unauthorized() 
+	public void efetua_login_mal_sucedido_por_senha_incorreta_deve_retornar_status_unauthorized()
 			throws EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-												._id(ObjectId.get())
-												.email("usuarioTeste@teste.com")
-												.senha("123")												
-												.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125");
-		
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(false);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.UNAUTHORIZED, resultado.getStatusCode());
 	}
-	
+
 	@Test
-	public void efetua_login_mal_sucedido_por_excecao_durante_validacao_de_senha_deve_retornar_usuario_informado() 
-			throws EncriptadorServiceException{
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")												
-				.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
+	public void efetua_login_mal_sucedido_por_excecao_durante_validacao_de_senha_deve_retornar_usuario_informado()
+			throws EncriptadorServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
-		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenThrow(EncriptadorServiceException.class);
-		//exec
+		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha()))
+				.thenThrow(EncriptadorServiceException.class);
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
-	public void efetua_login_mal_sucedido_por_excecao_durante_validacao_de_senha_deve_retornar_status_internal_server_error() 
-			throws EncriptadorServiceException{
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")												
-				.build();		
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
+	public void efetua_login_mal_sucedido_por_excecao_durante_validacao_de_senha_deve_retornar_status_internal_server_error()
+			throws EncriptadorServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
-		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenThrow(EncriptadorServiceException.class);
-		//exec
+		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha()))
+				.thenThrow(EncriptadorServiceException.class);
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resultado.getStatusCode());
 	}
 
 	@Test
-	public void efetua_login_mal_sucedido_por_excecao_durante_gerar_token_deve_retornar_usuario_informado() 
-		throws AuthenticationServiceException, EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")												
-				.build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
-		
+	public void efetua_login_mal_sucedido_por_excecao_durante_gerar_token_deve_retornar_usuario_informado()
+			throws AuthenticationServiceException, EncriptadorServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
 		when(auth.geraToken(usuarioCanonical)).thenThrow(AuthenticationServiceException.class);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
-	public void efetua_login_mal_sucedido_por_excecao_durante_gerar_token_deve_retornar_status_internal_server_error() 
-		throws AuthenticationServiceException, EncriptadorServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")												
-				.build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
-		
+	public void efetua_login_mal_sucedido_por_excecao_durante_gerar_token_deve_retornar_status_internal_server_error()
+			throws AuthenticationServiceException, EncriptadorServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
 		when(auth.geraToken(usuarioCanonical)).thenThrow(AuthenticationServiceException.class);
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaLogin(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, resultado.getStatusCode());
 	}
-	
+
 	@Test
 	public void efetua_cadastro_bem_sucedido_deve_retornar_usuario_cadastrado() 
 		throws EncriptadorServiceException, AuthenticationServiceException {
@@ -250,7 +217,7 @@ public class LoginControllerTest {
 		when(usuarioController.createUsuario(usuarioCanonical)).thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
 		//exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
 
@@ -267,37 +234,33 @@ public class LoginControllerTest {
 		when(usuarioController.createUsuario(usuarioCanonical)).thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
 		//exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.OK, resultado.getStatusCode());
 	}
-	
+
 	@Test
 	public void efetua_cadastro_mal_sucedido_deve_retornar_usuario_invalido_quando_usuario_com_email_igual_ja_existir() {
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")
-				.build();
-		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123",
+				new Status());
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuarioAlt));
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
-		//check
+		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
-	
+
 	@Test
 	public void efetua_cadastro_mal_sucedido_deve_retornar_status_conflict_quando_usuario_com_email_igual_ja_existir() {
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")
-				.build();
-		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123");
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123",
+				new Status());
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuarioAlt));
-		//exec
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
-		//check
+		// check
 		assertEquals(HttpStatus.CONFLICT, resultado.getStatusCode());
 	}
 }

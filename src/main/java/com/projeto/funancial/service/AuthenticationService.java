@@ -35,7 +35,7 @@ public class AuthenticationService {
 	 */
 	public String geraToken(UsuarioCanonical usuarioCanonical) throws AuthenticationServiceException {	
 		try {
-			return createJwt(this.config.getJwtSecret(), usuarioCanonical.get_id().toHexString());		
+			return createJwt(config.getJwtSecret(), usuarioCanonical.get_id().toHexString());		
 		} catch(JWTCreationException e) {
 			throw new AuthenticationServiceException("Erro durante a criação do token.", e.getCause()); 
 		}	

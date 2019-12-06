@@ -1,5 +1,6 @@
 package com.projeto.funancial.beanUtil;
 
+
 import org.springframework.stereotype.Service;
 
 import com.projeto.funancial.canonical.UsuarioCanonical;
@@ -29,6 +30,7 @@ public class UsuarioBeanUtil {
 				.nome(usuarioCanonical.getNome())
 				.senha(usuarioCanonical.getSenha())
 				.sobrenome(usuarioCanonical.getSobrenome())
+				.status(usuarioCanonical.getStatus())
 				.build();
 	}
 	
@@ -45,6 +47,8 @@ public class UsuarioBeanUtil {
 				.nome(usuario.getNome())
 				.senha(usuario.getSenha())
 				.sobrenome(usuario.getSobrenome())
+				.status(usuario.getStatus())
+				._id(usuario.get_id())//Lembrar de remover isso se der ruim
 				.build();
 	}
 }

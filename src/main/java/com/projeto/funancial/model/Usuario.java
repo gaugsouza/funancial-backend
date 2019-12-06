@@ -1,5 +1,7 @@
 package com.projeto.funancial.model;
 
+import java.math.BigDecimal;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -27,4 +29,18 @@ public class Usuario {
 	private String nome;
 	private String sobrenome;
 	private String senha;
+	@Builder.Default
+	private Status status = new Status();
+	
+	public BigDecimal getDinheiro() {
+		return getStatus().getDinheiro();
+	}
+	
+	public Integer getNivel() {
+		return getStatus().getNivel();
+	}
+	
+	public Double getExperiencia() {
+		return getStatus().getExperiencia();
+	}
 }

@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import com.projeto.funancial.service.UsuarioService;
 
 @RestController
 @RequestMapping("/login")
+@CrossOrigin(origins =  "*" )
 public class LoginController {
 	private UsuarioService usuarioService;
 	private EncriptadorService encriptadorService;
@@ -34,9 +36,9 @@ public class LoginController {
 		this.authenticationService = authenticationService;
 		this.usuarioController = usuarioController;
 	}
-	
-    private final Logger logger = LogManager.getLogger(LoginController.class);
-	
+
+	private final Logger logger = LogManager.getLogger(LoginController.class);
+
 	@PostMapping(value = "/")
 	public ResponseEntity<UsuarioCanonical> efetuaLogin(@RequestBody UsuarioCanonical usuarioCanonical) {
 		if(Optional.ofNullable(usuarioCanonical.getJwt()).isPresent() && 
@@ -68,13 +70,13 @@ public class LoginController {
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping(value = "/cadastro")
 	public ResponseEntity<UsuarioCanonical> efetuaCadastro(@RequestBody UsuarioCanonical usuarioCanonical) {
 		Optional<Usuario> usuario = usuarioService.findAll().stream()
-				.filter(u -> usuarioCanonical.getEmail().equals(u.getEmail())).findFirst();			
-		
-		if(usuario.isPresent())
+				.filter(u -> usuarioCanonical.getEmail().equals(u.getEmail())).findFirst();
+
+		if (usuario.isPresent())
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.CONFLICT);
 		
 		return new ResponseEntity<UsuarioCanonical>(usuarioController.createUsuario(usuarioCanonical).getBody(), HttpStatus.OK);
