@@ -122,7 +122,7 @@ public class UsuarioController {
 		try {
 			 senhaEncriptada = encriptadorService.geraSenhaEncriptada(usuarioCanonical.getSenha());
 		} catch (EncriptadorServiceException e) {
-			logger.error("Erro encontrado durante a encripta��o da senha informada:\n" + e.getMessage()
+			logger.error("Erro encontrado durante a encript da senha informada:\n" + e.getMessage()
 			+ "\nCausa:\n" + e.getCause());
 			
 			return new ResponseEntity<UsuarioCanonical>(usuarioCanonical, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -132,6 +132,11 @@ public class UsuarioController {
 		usuarioOptional.get().setSobrenome(usuarioCanonical.getSobrenome());
 		usuarioOptional.get().setEmail(usuarioCanonical.getEmail());
 		usuarioOptional.get().setSenha(senhaEncriptada);
+		usuarioOptional.get().setNivel(usuarioCanonical.getNivel());
+		usuarioOptional.get().setSequencia(usuarioCanonical.getSequencia());
+		usuarioOptional.get().setVida(usuarioCanonical.getVida());
+		usuarioOptional.get().setEnergia(usuarioCanonical.getEnergia());
+		usuarioOptional.get().setDinheiro(usuarioCanonical.getDinheiro());
 		
 		return new ResponseEntity<>(transformation.convert(service.save(usuarioOptional.get())), HttpStatus.OK);
 	}

@@ -30,7 +30,11 @@ public class UsuarioBeanUtil {
 				.nome(usuarioCanonical.getNome())
 				.senha(usuarioCanonical.getSenha())
 				.sobrenome(usuarioCanonical.getSobrenome())
-				.status(usuarioCanonical.getStatus())
+				.nivel(usuarioCanonical.getNivel())
+				.sequencia(usuarioCanonical.getSequencia())
+				.vida(usuarioCanonical.getVida())
+				.energia(usuarioCanonical.getEnergia())
+				.dinheiro(usuarioCanonical.getDinheiro())
 				.build();
 	}
 	
@@ -47,8 +51,11 @@ public class UsuarioBeanUtil {
 				.nome(usuario.getNome())
 				.senha(usuario.getSenha())
 				.sobrenome(usuario.getSobrenome())
-				.status(usuario.getStatus())
-				._id(usuario.get_id())//Lembrar de remover isso se der ruim
+				.nivel(usuario.getNivel())
+				.sequencia(usuario.getSequencia())
+				.vida(usuario.getVida())
+				.energia(usuario.getEnergia())
+				.dinheiro(usuario.getDinheiro())
 				.build();
 	}
 }

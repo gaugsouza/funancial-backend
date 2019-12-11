@@ -2,8 +2,6 @@ package com.projeto.funancial.canonical;
 
 import org.bson.types.ObjectId;
 
-import com.projeto.funancial.model.Status;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +26,9 @@ public class UsuarioCanonical {
 	private String sobrenome;
 	private String email;
 	private String senha;
-	@Builder.Default
-	private Status status = new Status();
+	private Integer nivel;
+	private Integer sequencia;
+	private Integer vida;
+	private Integer energia;
+	private Integer dinheiro;
 }
