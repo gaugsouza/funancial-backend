@@ -43,4 +43,8 @@ public class Usuario {
 	public Double getExperiencia() {
 		return getStatus().getExperiencia();
 	}
+	
+	public String getNome() {
+		return getNome();
+	}
 }
