@@ -2,24 +2,21 @@ package com.projeto.funancial.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
 
-import com.projeto.funancial.model.Status;
 import com.projeto.funancial.model.Usuario;
 
 public class EstatisticaServiceTest {
 	EstatisticasService service = new EstatisticasService();
+	private static final Double DINHEIRO_INICIAL = 30d;
+	private static final Integer NIVEL_INICIAL = 1;
 
 	@Test
 	public void deve_retornar_progresso_no_nivel_do_usuario() {
 		// config
 		Usuario usuario = new Usuario();
-		Status status = new Status();
-		status.setNivel(2);
-		usuario.setStatus(status);
-		Integer diferencaNivelEsperada = usuario.getNivel() - Status.NIVEL_INICIAL;
+		usuario.setNivel(2);
+		Integer diferencaNivelEsperada = usuario.getNivel() - NIVEL_INICIAL;
 		// exec
 		Integer estatisticaNivel = service.gerarEstatisticaNivel(usuario);
 		// check
@@ -30,10 +27,8 @@ public class EstatisticaServiceTest {
 	public void deve_retornar_progresso_no_dinheiro_do_usuario() {
 		// config
 		Usuario usuario = new Usuario();
-		Status status = new Status();
-		status.setDinheiro(BigDecimal.valueOf(30d));
-		usuario.setStatus(status);
-		Double diferencaEsperada = usuario.getDinheiro().doubleValue() - Status.DINHEIRO_INICIAL.doubleValue();
+		usuario.setDinheiro(30);
+		Double diferencaEsperada = usuario.getDinheiro().doubleValue() - DINHEIRO_INICIAL;
 		// exec
 		Double estatisticaDinheiro = service.gerarEstatisticaDinheiro(usuario);
 		// check
@@ -44,8 +39,7 @@ public class EstatisticaServiceTest {
 	public void deve_retornar_zero_no_progresso_nivel_por_nao_ter_tido_nenhum_avanco() {
 		// config
 		Usuario usuario = new Usuario();
-		usuario.setStatus(new Status());
-
+		usuario.setNivel(1);
 		// exec
 		Integer estatisticaNivel = service.gerarEstatisticaNivel(usuario);
 		// check
@@ -56,7 +50,7 @@ public class EstatisticaServiceTest {
 	public void deve_retornar_zero_no_dinheiro() {
 		// config
 		Usuario usuario = new Usuario();
-		usuario.setStatus(new Status());
+		usuario.setDinheiro(30);
 
 		// exec
 		Double estatisticaDinheiro = service.gerarEstatisticaDinheiro(usuario);
@@ -68,11 +62,9 @@ public class EstatisticaServiceTest {
 	public void deve_retornar_valor_negativo() {
 		// config
 		Usuario usuario = new Usuario();
-		Status status = new Status();
-		status.setDinheiro(BigDecimal.valueOf(20d));
-		usuario.setStatus(status);
+		usuario.setDinheiro(20);
 
-		Double valorEsperado = 20 - Status.DINHEIRO_INICIAL.doubleValue();
+		Double valorEsperado = 20 - DINHEIRO_INICIAL;
 
 		// exec
 		Double estatisticaDinheiro = service.gerarEstatisticaDinheiro(usuario);

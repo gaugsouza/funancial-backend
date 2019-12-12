@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import com.projeto.funancial.canonical.UsuarioCanonical;
 import com.projeto.funancial.exception.AuthenticationServiceException;
 import com.projeto.funancial.exception.EncriptadorServiceException;
-import com.projeto.funancial.model.Status;
 import com.projeto.funancial.model.Usuario;
 import com.projeto.funancial.service.AuthenticationService;
 import com.projeto.funancial.service.EncriptadorService;
@@ -24,10 +23,12 @@ import com.projeto.funancial.transformation.UsuarioTransformation;
 public class LoginControllerTest {
 	private UsuarioService svc = Mockito.mock(UsuarioService.class);
 	private EncriptadorService encrypt = Mockito.mock(EncriptadorService.class);
-	private AuthenticationService auth = Mockito.mock(AuthenticationService.class); 
+	private AuthenticationService auth = Mockito.mock(AuthenticationService.class);
 	private UsuarioController usuarioController = Mockito.mock(UsuarioController.class);
 	private UsuarioTransformation transformation = Mockito.mock(UsuarioTransformation.class);
-	private LoginController loginController = new LoginController(svc, transformation, encrypt, auth, usuarioController);
+	private LoginController loginController = new LoginController(svc, transformation, encrypt, auth,
+			usuarioController);
+
 	@Test
 	public void efetua_login_deve_retornar_usuario_informado_quando_o_token_informado_for_valido() {
 		// config
@@ -55,7 +56,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
 		// exec
@@ -69,7 +71,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
 		// exec
@@ -83,7 +86,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioInexistente@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		// exec
@@ -97,7 +101,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioInexistente@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		// exec
@@ -112,7 +117,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(false);
@@ -128,7 +134,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "125", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(false);
@@ -144,7 +151,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha()))
@@ -161,7 +169,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha()))
@@ -178,7 +187,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
@@ -196,7 +206,8 @@ public class LoginControllerTest {
 		// config
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", new Status());
+		Usuario usuario = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100, 100,
+				30);
 
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuario));
 		when(encrypt.validaSenha(usuarioCanonical.getSenha(), usuario.getSenha())).thenReturn(true);
@@ -209,34 +220,30 @@ public class LoginControllerTest {
 	}
 
 	@Test
-	public void efetua_cadastro_bem_sucedido_deve_retornar_usuario_cadastrado() 
-		throws EncriptadorServiceException, AuthenticationServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")
-				.build();
-		
-		when(usuarioController.createUsuario(usuarioCanonical)).thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
-		//exec
+	public void efetua_cadastro_bem_sucedido_deve_retornar_usuario_cadastrado()
+			throws EncriptadorServiceException, AuthenticationServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+
+		when(usuarioController.createUsuario(usuarioCanonical))
+				.thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
 		// check
 		assertEquals(usuarioCanonical, resultado.getBody());
 	}
 
 	@Test
-	public void efetua_cadastro_bem_sucedido_deve_retornar_status_ok() 
-		throws EncriptadorServiceException, AuthenticationServiceException {
-		//config
-		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()
-				._id(ObjectId.get())
-				.email("usuarioTeste@teste.com")
-				.senha("123")
-				.build();
-		
-		when(usuarioController.createUsuario(usuarioCanonical)).thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
-		//exec
+	public void efetua_cadastro_bem_sucedido_deve_retornar_status_ok()
+			throws EncriptadorServiceException, AuthenticationServiceException {
+		// config
+		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
+				.email("usuarioTeste@teste.com").senha("123").build();
+
+		when(usuarioController.createUsuario(usuarioCanonical))
+				.thenReturn(new ResponseEntity<>(usuarioCanonical, HttpStatus.OK));
+		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
 		// check
 		assertEquals(HttpStatus.OK, resultado.getStatusCode());
@@ -246,8 +253,8 @@ public class LoginControllerTest {
 	public void efetua_cadastro_mal_sucedido_deve_retornar_usuario_invalido_quando_usuario_com_email_igual_ja_existir() {
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123",
-				new Status());
+		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100,
+				100, 30);
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuarioAlt));
 		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
@@ -259,8 +266,8 @@ public class LoginControllerTest {
 	public void efetua_cadastro_mal_sucedido_deve_retornar_status_conflict_quando_usuario_com_email_igual_ja_existir() {
 		UsuarioCanonical usuarioCanonical = UsuarioCanonical.builder()._id(ObjectId.get())
 				.email("usuarioTeste@teste.com").senha("123").build();
-		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123",
-				new Status());
+		Usuario usuarioAlt = new Usuario(ObjectId.get(), "usuarioTeste@teste.com", "Jose", "Souza", "123", 1, 1, 100,
+				100, 30);
 		when(svc.findAll()).thenReturn(Arrays.asList(new Usuario(), usuarioAlt));
 		// exec
 		ResponseEntity<UsuarioCanonical> resultado = loginController.efetuaCadastro(usuarioCanonical);
