@@ -32,5 +32,4 @@ public class Usuario {
 	private Integer vida;
 	private Integer energia;
 	private Integer dinheiro;
-	
 }
