@@ -34,7 +34,7 @@ import com.projeto.funancial.transformation.UsuarioTransformation;
  */
 @RestController
 @RequestMapping("/usuario")
-@CrossOrigin
+@CrossOrigin(origins =  "http://funancial-frontend.herokuapp.com")
 public class UsuarioController {
 	private UsuarioService service;
 	private UsuarioTransformation transformation;

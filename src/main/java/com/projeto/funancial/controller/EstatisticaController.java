@@ -16,7 +16,7 @@ import com.projeto.funancial.model.Usuario;
 import com.projeto.funancial.service.EstatisticasService;
 import com.projeto.funancial.service.UsuarioService;
 
-@CrossOrigin
+@CrossOrigin(origins =  "http://funancial-frontend.herokuapp.com")
 @RestController
 @RequestMapping(value = "/usuario/{id}/estatisticas")
 public class EstatisticaController {

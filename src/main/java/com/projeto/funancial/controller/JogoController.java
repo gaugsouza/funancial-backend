@@ -21,7 +21,7 @@ import com.projeto.funancial.transformation.UsuarioTransformation;
 
 @RestController
 @RequestMapping("/jogo")
-@CrossOrigin
+@CrossOrigin(origins =  "http://funancial-frontend.herokuapp.com")
 public class JogoController {
 	private UsuarioService usuarioService;
 	private UsuarioTransformation usuarioTransformation;
