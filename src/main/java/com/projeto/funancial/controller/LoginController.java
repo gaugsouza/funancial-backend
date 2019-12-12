@@ -23,7 +23,7 @@ import com.projeto.funancial.transformation.UsuarioTransformation;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins =  "http://funancial-frontend.herokuapp.com")
+@CrossOrigin
 public class LoginController {
 	private UsuarioService usuarioService;
 	private UsuarioTransformation usuarioTransformation;
