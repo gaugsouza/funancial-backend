@@ -1,9 +1,5 @@
 package com.projeto.funancial.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.projeto.funancial.model.Historia;
@@ -17,8 +13,8 @@ public class HistoriaService {
     	this.historiaRepository = historiaRepository;
     }
 
-    public getHistoriaBySequenciaAndNivel(Historia sequencia, Historia nivel) {
-    	this.historiaRepository.getHistoriaBySequenciaAndNivel(sequencia, nivel);
+    public Historia getHistoriaBySequenciaAndNivel(Integer sequencia, Integer nivel) {
+    	return historiaRepository.getHistoriaBySequenciaAndNivel(sequencia, nivel);
     }
     
 }

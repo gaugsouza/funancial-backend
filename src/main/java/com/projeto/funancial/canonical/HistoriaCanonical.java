@@ -1,9 +1,10 @@
-package com.projeto.funancial.model;
+package com.projeto.funancial.canonical;
 
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+
+import com.projeto.funancial.model.Opcao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Historia {
-	@Id 
+public class HistoriaCanonical {
 	private ObjectId _id;
 	private String historia;
 	private Integer nivel;

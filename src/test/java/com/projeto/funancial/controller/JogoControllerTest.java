@@ -1,6 +1,5 @@
 package com.projeto.funancial.controller;
 
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import org.bson.types.ObjectId;
@@ -9,15 +8,19 @@ import org.mockito.Mockito;
 
 import com.projeto.funancial.canonical.UsuarioCanonical;
 import com.projeto.funancial.model.Usuario;
+import com.projeto.funancial.service.HistoriaService;
 import com.projeto.funancial.service.JogoService;
 import com.projeto.funancial.service.UsuarioService;
+import com.projeto.funancial.transformation.HistoriaTransformation;
 import com.projeto.funancial.transformation.UsuarioTransformation;
 
 public class JogoControllerTest {
 	private UsuarioService svc = Mockito.mock(UsuarioService.class);
 	private UsuarioTransformation transformation = Mockito.mock(UsuarioTransformation.class);
 	private JogoService jogoService = Mockito.mock(JogoService.class);
-	private JogoController jogoController = new JogoController(svc, transformation, jogoService);
+	private HistoriaService historiaService = Mockito.mock(HistoriaService.class);
+	private HistoriaTransformation historiaTransformation = Mockito.mock(HistoriaTransformation.class);
+	private JogoController jogoController = new JogoController(svc, transformation, jogoService, historiaService, historiaTransformation);
 
 	
 	@Test
